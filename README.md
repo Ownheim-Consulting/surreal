@@ -1,6 +1,10 @@
 # NASA_Space_Apps_2022_Backend
 Backend Code for NASA Space Apps 2022.
 
+# Dependencies
+- Python 3.10
+- Pipenv
+
 # How to Run
 This project uses pipenv for dependency management. 
 
