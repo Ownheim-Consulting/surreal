@@ -1,11 +1,7 @@
-import logging
-
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.types import REAL
 
 from .db import Base, Session
-
-logger = logging.getLogger()
 
 class CountyAvgSal(Base):
     __tablename__ = 'county_avg_sal'
@@ -44,12 +40,8 @@ def addCountyAvgSal(s: Session, c: CountyAvgSal) -> CountyAvgSal:
 
 def getCountyAvgSalByLatLng(s: Session, lat: str, lng: str) -> CountyAvgSal:
         c = s.query(CountyAvgSal).filter(CountyAvgSal.lat == lat).filter(CountyAvgSal.lng == lng).first()
-        if c is None:
-            logger.info("Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
         return c
 
 def getCountyAvgSalByName(s: Session, name: str) -> CountyAvgSal:
         c = s.query(CountyAvgSal).filter(CountyAvgSal.name == name).first()
-        if c is None:
-            logger.info("Could not retrieve CountyAvgSal with name: {}".format(name))
         return c

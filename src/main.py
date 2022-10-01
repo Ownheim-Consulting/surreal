@@ -24,30 +24,25 @@ class ErrorResponse:
         }
 
 @app.route("/api/avgsal/lat/<float:lat>/lng/<float:lng>")
-def getCountyAvgSalByLatLng(lat: float, lng: float):
+def getCountyAvgSal(lat: float, lng: float):
     countyAvgSal = getCountyAvgSalByLatLng(session, lat, lng)
     if countyAvgSal is None:
-        e = ErrorResponse(404, "RESOURCE_NOT_FOUND", "Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
-        return jsonify(e.toJson()), e.code
+        abort(404, description="Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
 
     return jsonify(countyAvgSal.toJson())
 
 @app.route("/api/avgsal/name/<string:name>")
-def getCountyAvgSalByName(name):
+def getCountyAvgSalUsingName(name: str):
     countyAvgSal = getCountyAvgSalByName(session, name)
     if countyAvgSal is None:
-        e = ErrorResponse(404, "RESOURCE_NOT_FOUND", "Could not retrieve CountyAvgSal with name: {}".format(name))
-        return jsonify(e.toJson()), e.code
+        abort(404, description="Could not retrieve CountyAvgSal with name: {}".format(name))
 
     return jsonify(countyAvgSal.toJson())
 
-def getCountyAvgSal(lat, lng):
-    countyAvgSal = getCountyAvgSalByLatLng(session, lat, lng)
-    if countyAvgSal is None:
-        e = ErrorResponse(404, "RESOURCE_NOT_FOUND", "Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
-        return jsonify(e.toJson()), e.code
+@app.errorhandler(404)
+def resourceNotFound(e):
+    return jsonify(error=str(e)), 404
 
-    return jsonify(countyAvgSal.toJson())
 def main():
     # Create all of the DB tables if they don't exist
     Base.metadata.create_all(engine)
