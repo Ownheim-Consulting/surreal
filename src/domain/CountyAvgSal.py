@@ -1,7 +1,11 @@
+import logging
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.types import REAL
 
 from .db import Base, Session
+
+logger = logging.getLogger()
 
 class CountyAvgSal(Base):
     __tablename__ = 'county_avg_sal'
@@ -18,6 +22,21 @@ class CountyAvgSal(Base):
     lr2022 = Column(REAL)
     lr2023 = Column(REAL)
 
+    def toJson(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "lat": self.lat,
+            "lng": self.lng,
+            "lr2017": self.lr2017,
+            "lr2018": self.lr2018,
+            "lr2019": self.lr2019,
+            "lr2020": self.lr2020,
+            "lr2021": self.lr2021,
+            "lr2022": self.lr2022,
+            "lr2023": self.lr2023
+        }
+
 def addCountyAvgSal(s: Session, c: CountyAvgSal) -> CountyAvgSal:
         s.add(c)
         s.commit()
@@ -25,6 +44,8 @@ def addCountyAvgSal(s: Session, c: CountyAvgSal) -> CountyAvgSal:
 
 def getCountyAvgSalByLatLng(s: Session, lat: str, lng: str) -> CountyAvgSal:
         c = s.query(CountyAvgSal).filter(CountyAvgSal.lat == lat).filter(CountyAvgSal.lng == lng).first()
+        if c is None:
+            logger.info("Could not retrieve CountyAvgSal with lat: {} and lng: {}", lat, lng)
         return c
 
 def getCountyAvgSalByName(s: Session, name: str) -> CountyAvgSal:

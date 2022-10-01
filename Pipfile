@@ -1,9 +1,11 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = "https://github.com/Ushrio/NASA_Space_Apps_2022_Backend.git"
 verify_ssl = true
-name = "pypi"
+name = "NASA Space Apps 2022 Backend"
 
 [packages]
+sqlalchemy = "*"
+flask = "*"
 
 [dev-packages]
 

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, abort, jsonify, Response
 
 from domain.db import engine, Base, Session
 from domain.CountyAvgSal import getCountyAvgSalByLatLng
@@ -6,10 +6,31 @@ from domain.CountyAvgSal import getCountyAvgSalByLatLng
 app = Flask(__name__)
 session = Session()
 
+class ErrorResponse:
+    code: int
+    error: str
+    message: str
+
+    def __init__(self, code: int, error: str, message: str):
+        self.code = code
+        self.error = error
+        self.message = message
+
+    def toJson(self):
+        return {
+            "code": self.code,
+            "error": self.error,
+            "message": self.message
+        }
+
 @app.route("/api/avgsal/lat/<float:lat>/lng/<float:lng>")
-def getCountyAvgSal(lat, lng, year):
+def getCountyAvgSal(lat, lng):
     countyAvgSal = getCountyAvgSalByLatLng(session, lat, lng)
-    return countyAvgSal
+    if countyAvgSal is None:
+        e = ErrorResponse(404, "RESOURCE_NOT_FOUND", "Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
+        return jsonify(e.toJson()), e.code
+
+    return jsonify(countyAvgSal.toJson())
 
 def main():
     # Create all of the DB tables if they don't exist
