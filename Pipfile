@@ -1,13 +1,15 @@
 [[source]]
-url = "https://github.com/Ushrio/NASA_Space_Apps_2022_Backend.git"
 verify_ssl = true
 name = "NASA Space Apps 2022 Backend"
+url = "https://pypi.python.org/simple"
 
 [packages]
 flask = "*"
 six = "*"
 google-auth = "*"
 google-cloud-storage = "*"
+python-dotenv = "*"
+gunicorn = "*"
 
 [dev-packages]
 

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import Flask, abort, jsonify, Response
 
-from google_cloud import generate_signed_url, upload_blob
+from src.google_cloud import generate_signed_url, upload_blob
 
 app = Flask(__name__)
 
@@ -44,10 +44,10 @@ def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
         graph_response = GraphResponse(graph_dataset, year, dest_graph_filename, signed_url)
         return jsonify(graph_response.to_dict())
 
-@app.route("/api/graph/corellation/x-dataset/<string:x_dataset>/y-dataset/<string:y_dataset>")
+@app.route("/api/graph/correllation/x-dataset/<string:x_dataset>/y-dataset/<string:y_dataset>")
 def create_correlation_graph_from_datasets(x_dataset: str, y_dataset: str):
         # created_graph # TODO (Greg Heiman): Generate correlation graph from both datasets
-        graph_dataset = "{}/{} Corellation".format(x_dataset, y_dataset)
+        graph_dataset = "{}/{} Correllation".format(x_dataset, y_dataset)
         dest_graph_filename, signed_url = upload_and_gen_signed_url_for_graph(created_graph)
         graph_response = GraphResponse(graph_dataset, year, dest_graph_filename, signed_url)
         return jsonify(graph_response.to_dict())
