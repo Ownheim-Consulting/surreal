@@ -11,6 +11,13 @@ google-cloud-storage = "*"
 python-dotenv = "*"
 gunicorn = "*"
 
+pandas = "*"
+geopandas = "*"
+plotly = "*"
+matplotlib = "*"
+numpy = "*"
+scipy = "*"
+
 [dev-packages]
 
 [requires]
