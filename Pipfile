@@ -6,6 +6,8 @@ name = "NASA Space Apps 2022 Backend"
 [packages]
 sqlalchemy = "*"
 flask = "*"
+six = "*"
+google-auth = "*"
 
 [dev-packages]
 

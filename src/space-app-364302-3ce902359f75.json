@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "space-app-364302",
+  "private_key_id": "3ce902359f753c89fe8761a03b80cf423f17d263",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDV5o5fQdbs/63C\nrbS4qnplChJMj4iwcC1WdLge0osK5jgHExabtiyXbR5zZkUp2GwZio7sgqq7c43N\nvLUCfhWMJW/bDcH8b5Cf9HVBiGTwX0K8YnDD3crFTNrQD3bj7/uQwqk9pxSo7jyg\nAZqtgLis8WnvIAW/iFDh4GVYkGNxwCuTcfY+C67N7MeGJ6btzPf+rxzQg6K3ukSE\ndgtTkk7cl8uhtn8CC+QHvmsJ2cTEcCXo7SCGHDHAmln7H+jhq1B3kZAiyUgwnJkB\n1Y9XG7nGtNgXUbBYMcTOivTFDdTsjm9nDFtegAKWIXAkgxOm1SHoIxZo4/Q9yei5\nUHiuTBYpAgMBAAECggEABAr8bNO/CuykEBfN1dyKssXzgFe0AlIOeKcSXf/GAcMw\nnX6d05HdtXt/eGLUmBTCKfiW2LokCBC9hjKExoApAASq9hxEQD/radXk+6OnCm2M\ngqhxf/GSs3MPTYswngs4nqef611w9tFGRf0dxggsBWsh4NONaZg7SiJTsWO3mMw7\nlUJ0YEojZu1Uxklqnm1ZDfN/JWcmTbVsqVT8TYphjT/EMdMzMS6uYOFgFG00kxwo\nyBnmQnHdHfbhugL13RUzZvpKO+dPBNIA0OFqzfCdVp9Yj9AaKkZ/8QXQrAiOjmi1\ns0eelACqmNGSVlISzMmNWonKKorAcatgYNjsSGLScQKBgQDwRym0gRLPWjDc+WD5\neNo/6JLzXkdvZbIUX3QnaybNr0LEbXN41mkbYyXUHu7zIT3u3HXEwh/0XDkwVgeT\nx4pwipRb+brdHmDvXhPKTCTVP4up4Jt1oUEnTqeBTqIz56MYc7N6EZjv74MTLENl\nH16btqCNfW296Jm+xaQCcZ/8sQKBgQDj5Y1rSbwzzT3TMHxU2KVcTrnlxC+0xCji\nr6ru4bVTbNVsR6H+G+Lw9vghKJDMSPsTGFi7Tb8SI7gJBa6JQmF2ERlNF7acBk1W\nxedLDYNIVWKLT2aFT+zpIo9OVApkEXH15ZSwFqUkjEA+8G5dEiZZ8rAfd+RD5yhr\n1RONmp+u+QKBgGK+jBgfN1C5mv0lC0Ja9S5wcPvNEgRowa93ru+ILJE45nJ9HIhb\nbSSRMXmkIMUQMziXp1puAN3WjLYdlM2Zon4vpVrLHY1Dr8iPXAi2FCkDDW2J3bmQ\nxIrX2yTb4PL9zdv9qJOQ6c4pGy/k7+l9486QVhjvpAr4rT5mUMmkUoBxAoGATQ05\nyUJ+3UzRUGwePVmaXyFG/QZd0tJXuH0IYAf0FKbBagC2JoIrMqltr1hVzJwIN6aN\nqZZZubpV6McBAettpEuXsFcKKKqAz4vN7bQ95ODploxb70rcoN5McYE8miTD0Q20\nPe0KHNdGiYEk71bJnLPPFHSmusaXBg5etAvJXZECgYBcK46WDnZf1/Hl1IOjLKWP\nWhCJTtfDap8PvEcnOhGgjjatGFLfCWc+8wwrEusa9tHPSKBPoIsMxHQIGkf/WAov\nzmMi8SUWsOggUjP0pUVvPxZ9RSqDUwVdjRdSe1eId/9WniIKSJRMljaqZloQedLB\nMWCSzOurfdm6smqYvqAoVQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "nasa-space-apps-2022-bucket@space-app-364302.iam.gserviceaccount.com",
+  "client_id": "104933130068770679757",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nasa-space-apps-2022-bucket%40space-app-364302.iam.gserviceaccount.com"
+}

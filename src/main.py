@@ -2,26 +2,13 @@ from flask import Flask, abort, jsonify, Response
 
 from domain.db import engine, Base, Session
 from domain.CountyAvgSal import getCountyAvgSalByLatLng, getCountyAvgSalByName
+from generate_signed_urls import generate_signed_url
 
 app = Flask(__name__)
 session = Session()
 
-class ErrorResponse:
-    code: int
-    error: str
-    message: str
-
-    def __init__(self, code: int, error: str, message: str):
-        self.code = code
-        self.error = error
-        self.message = message
-
-    def toJson(self):
-        return {
-            "code": self.code,
-            "error": self.error,
-            "message": self.message
-        }
+BUCKET_NAME = "nasa-space-apps-2022-graphs"
+GC_AUTH_FILE = "./src/space-app-364302-3ce902359f75.json"
 
 @app.route("/api/avgsal/lat/<float:lat>/lng/<float:lng>")
 def getCountyAvgSal(lat: float, lng: float):
@@ -29,7 +16,7 @@ def getCountyAvgSal(lat: float, lng: float):
     if countyAvgSal is None:
         abort(404, description="Could not retrieve CountyAvgSal with lat: {} and lng: {}".format(lat, lng))
 
-    return jsonify(countyAvgSal.toJson())
+    return jsonify(countyAvgSal.toDict())
 
 @app.route("/api/avgsal/name/<string:name>")
 def getCountyAvgSalUsingName(name: str):
@@ -37,7 +24,19 @@ def getCountyAvgSalUsingName(name: str):
     if countyAvgSal is None:
         abort(404, description="Could not retrieve CountyAvgSal with name: {}".format(name))
 
-    return jsonify(countyAvgSal.toJson())
+    return jsonify(countyAvgSal.toDict())
+
+@app.route("/api/gc/filename/<string:filename>")
+def getGcSignedUrl(filename: str):
+    signed_url = generate_signed_url(GC_AUTH_FILE, BUCKET_NAME, filename)
+
+    if signed_url is None:
+        abort(404, description="Could not generate signed URL for filename: {}".format(filename))
+
+    return jsonify({
+        "filename": filename,
+        "callbackUrl": signed_url,
+    })
 
 @app.errorhandler(404)
 def resourceNotFound(e):

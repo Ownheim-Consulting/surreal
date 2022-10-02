@@ -18,7 +18,7 @@ class CountyAvgSal(Base):
     lr2022 = Column(REAL)
     lr2023 = Column(REAL)
 
-    def toJson(self):
+    def toDict(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
