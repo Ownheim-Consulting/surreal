@@ -2,9 +2,9 @@
 Team: Space Jam
 Challenge: Take Flight: Making the Most of NASA’s Airborne Data
 Authors Listed in Alphabetical Order
-@Author: Akim Niyo <akimniyo27@gmail.com>, Fernando Rubio Garcia <fernando.rubiogarcia96@gmail.com>,
-@Author: Grant Johnson <grantjohnson654@gmail.com>, Greg Heiman <gregheiman02@gmail.com>, 
-@Author: Murphy Ownbey <wmownbey4@gmail.com>
+@Author: Akim Niyo <akimniyo27@gmail.com>, Dimitri Senevitratne <senevids@gmail.com>
+@Author: Fernando Rubio Garcia <fernando.rubiogarcia96@gmail.com>, Grant Johnson <grantjohnson654@gmail.com>,
+@Author: Greg Heiman <gregheiman02@gmail.com>, Murphy Ownbey <wmownbey4@gmail.com>
 @Date: 2022-10-01
 """
 from datetime import datetime
