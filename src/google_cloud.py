@@ -4,16 +4,39 @@ import datetime
 import hashlib
 import sys
 
-# pip install google-auth
+from dotenv import load_dotenv
 from google.oauth2 import service_account
-# pip install six
+from google.cloud import storage
 import six
 from six.moves.urllib.parse import quote
 
+load_dotenv()
+
+def upload_blob(bucket_name, source_file_name, destination_blob_name):
+    """Uploads a file to the bucket."""
+    # The ID of your GCS bucket
+    # bucket_name = "your-bucket-name"
+    # The path to your file to upload
+    # source_file_name = "local/path/to/file"
+    # The ID of your GCS object
+    # destination_blob_name = "storage-object-name"
+
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+
+    blob.upload_from_filename(source_file_name)
 
 def generate_signed_url(service_account_file, bucket_name, object_name,
-                        subresource=None, expiration=604800, http_method='GET',
+                        subresource=None, expiration=3600, http_method='GET',
                         query_parameters=None, headers=None):
+    """Generates a signed URL for an entity in a bucket."""
+    # Your service account credentials
+    # service_account_file = "local/path/to/file"
+    # The ID of your GCS bucket
+    # bucket_name = "your-bucket-name"
+    # The name of the entity in your bucket.
+    # source_file_name = "your-object-name"
 
     if expiration > 604800:
         print('Expiration Time can\'t be longer than 604800 seconds (7 days).')

@@ -4,10 +4,10 @@ verify_ssl = true
 name = "NASA Space Apps 2022 Backend"
 
 [packages]
-sqlalchemy = "*"
 flask = "*"
 six = "*"
 google-auth = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 
