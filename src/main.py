@@ -10,7 +10,7 @@ Authors Listed in Alphabetical Order
 from datetime import datetime
 from enum import Enum
 
-from flask import Flask, abort, jsonify, Response
+from flask import Flask, abort, jsonify
 
 from src.google_cloud import generate_signed_url, upload_blob
 
@@ -76,6 +76,7 @@ def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
         # graph_dataset = "your-desired-graph-dataset"
         # The desired year for the dataset.
         # year = "2022"
+        try:
             Datasets.value_of(graph_dataset)
         except ValueError as e:
             abort(400, description=str(e))
