@@ -1,3 +1,12 @@
+"""NASA Space Apps 2022 Challenge
+Team: Space Jam
+Challenge: Take Flight: Making the Most of NASA’s Airborne Data
+Authors Listed in Alphabetical Order
+@Author: Akim Niyo <akimniyo27@gmail.com>, Fernando Rubio Garcia <fernando.rubiogarcia96@gmail.com>,
+@Author: Grant Johnson <grantjohnson654@gmail.com>, Greg Heiman <gregheiman02@gmail.com>, 
+@Author: Murphy Ownbey <wmownbey4@gmail.com>
+@Date: 2022-10-01
+"""
 from datetime import datetime
 from enum import Enum
 
@@ -11,11 +20,17 @@ BUCKET_NAME = "nasa-space-apps-2022-graphs"
 GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
 
 class Datasets(Enum):
+    """Enum for valid datasets that clients can query."""
     SEVERE_WEATHER=1
     AVG_SALARY=2
 
     @classmethod
     def value_of(cls, value):
+        """Compare the value of a string to enum values."""
+        # The class of enum to compare the string to.
+        # cls = "your-enum-name"
+        # The string value to compare.
+        # value = "your-string=value"
         for k, v in cls.__members__.items():
             if k == value:
                 return v
@@ -23,6 +38,7 @@ class Datasets(Enum):
             raise ValueError(f"'{cls.__name__}' enum not found for '{value}'")
 
 class GraphResponse:
+    """Class representation of responses to graph requests."""
     dataset: str
     year: int
     filename: str
@@ -35,6 +51,7 @@ class GraphResponse:
         self.callbackUrl = callbackUrl
 
     def to_dict(self):
+        """Convert GraphResponse to a dictionary."""
         return {
             "dataset": graph_dataset,
             "year": year,
@@ -43,6 +60,9 @@ class GraphResponse:
         }
 
 def upload_and_gen_signed_url_for_graph(created_graph_filename: str):
+        """Upload created graph to Google Cloud bucket and retrieve a signed URL for it."""
+        # The local filename to upload to Google Cloud.
+        # created_graph_filename = "your-created-graph-filename"
         # File name format: dataset-year-current_time.png
         dest_graph_filename = "{}-{}-{}.png".format(graph_dataset, year, datetime.now().strftime("%Y%m%d%H%M%S"))
         upload_blob(BUCKET_NAME, created_graph, dest_graph_filename) # Upload the created graph to GC
@@ -51,7 +71,11 @@ def upload_and_gen_signed_url_for_graph(created_graph_filename: str):
 
 @app.route("/api/graph/dataset/<string:graph_dataset>/year/<int:year>")
 def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
-        try:
+        """Create a graph from the desired dataset and year and return a GraphResponse to the client."""
+        # The desired dataset for the graph.
+        # graph_dataset = "your-desired-graph-dataset"
+        # The desired year for the dataset.
+        # year = "2022"
             Datasets.value_of(graph_dataset)
         except ValueError as e:
             abort(400, description=str(e))
@@ -61,8 +85,15 @@ def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
         graph_response = GraphResponse(graph_dataset, year, dest_graph_filename, signed_url)
         return jsonify(graph_response.to_dict())
 
-@app.route("/api/graph/correllation/x-dataset/<string:x_dataset>/y-dataset/<string:y_dataset>")
-def create_correlation_graph_from_datasets(x_dataset: str, y_dataset: str):
+@app.route("/api/graph/correllation/x-dataset/<string:x_dataset>/y-dataset/<string:y_dataset>/year/<int:year>")
+def create_correlation_graph_from_datasets(x_dataset: str, y_dataset: str, year: int):
+        """Create a correlation graph between two datasets."""
+        # The dataset that you desire to be on the x-axis.
+        # x_dataset = "your-desired-graph-dataset"
+        # The dataset that you desire to be on the y-axis.
+        # y_dataset = "your-desired-graph-dataset"
+        # The year for both datasets.
+        # year = "2022"
         try:
             Datasets.value_of(x_dataset)
             Datasets.value_of(y_dataset)
@@ -77,15 +108,18 @@ def create_correlation_graph_from_datasets(x_dataset: str, y_dataset: str):
 
 @app.route("/api/google-cloud/filename/<string:filename>")
 def get_google_cloud_signed_url(filename: str):
-    signed_url = generate_signed_url(GC_AUTH_FILE, BUCKET_NAME, filename)
+        """Create a signed URL for a Google Cloud Bucket entity."""
+        # The name of the file on Google Cloud
+        # filename = "your-filename"
+        signed_url = generate_signed_url(GC_AUTH_FILE, BUCKET_NAME, filename)
 
-    if signed_url is None:
-        abort(404, description="Could not generate signed URL for filename: {}".format(filename))
+        if signed_url is None:
+            abort(404, description="Could not generate signed URL for filename: {}".format(filename))
 
-    return jsonify({
-        "filename": filename,
-        "callbackUrl": signed_url,
-    })
+        return jsonify({
+            "filename": filename,
+            "callbackUrl": signed_url,
+        })
 
 @app.errorhandler(400)
 def bad_request_parameters(e):
