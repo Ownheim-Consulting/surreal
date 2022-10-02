@@ -11,7 +11,7 @@ BUCKET_NAME = "nasa-space-apps-2022-graphs"
 GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
 
 @app.route("/api/graph/dataset/<string:graph_dataset>/year/<int:year>")
-def getGraphDatasetForYear(graph_dataset: str, year: int):
+def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
         # Retrieve graph
         # created_graph # TODO (Greg Heiman): Generate the graph
         # File name format: dataset-year-current_time.png
@@ -26,7 +26,7 @@ def getGraphDatasetForYear(graph_dataset: str, year: int):
         })
 
 @app.route("/api/gc/filename/<string:filename>")
-def getGcSignedUrl(filename: str):
+def get_google_cloud_signed_url(filename: str):
     signed_url = generate_signed_url(GC_AUTH_FILE, BUCKET_NAME, filename)
 
     if signed_url is None:
@@ -38,8 +38,20 @@ def getGcSignedUrl(filename: str):
     })
 
 @app.errorhandler(404)
-def resourceNotFound(e):
+def resource_not_found(e):
     return jsonify(error=str(e)), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify(error=str(e)), 500
+
+@app.errorhandler(403)
+def forbidden(e):
+    return jsonify(error=str(e)), 403
+
+@app.errorhandler(401)
+def invalid_credentials(e):
+    return jsonify(error=str(e)), 401
 
 def main():
     # Setup web server. Runs on port 5000
