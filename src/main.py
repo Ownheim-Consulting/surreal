@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from flask import Flask, abort, jsonify, Response
 
@@ -8,6 +9,18 @@ app = Flask(__name__)
 
 BUCKET_NAME = "nasa-space-apps-2022-graphs"
 GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
+
+class Datasets(Enum):
+    SEVERE_WEATHER=1
+    AVG_SALARY=2
+
+    @classmethod
+    def value_of(cls, value):
+        for k, v in cls.__members__.items():
+            if k == value:
+                return v
+        else:
+            raise ValueError(f"'{cls.__name__}' enum not found for '{value}'")
 
 class GraphResponse:
     dataset: str
@@ -38,7 +51,11 @@ def upload_and_gen_signed_url_for_graph(created_graph_filename: str):
 
 @app.route("/api/graph/dataset/<string:graph_dataset>/year/<int:year>")
 def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
-        # Retrieve graph
+        try:
+            Datasets.value_of(graph_dataset)
+        except ValueError as e:
+            abort(400, description=str(e))
+
         # created_graph # TODO (Greg Heiman): Generate the graph
         dest_graph_filename, signed_url = upload_and_gen_signed_url_for_graph(created_graph)
         graph_response = GraphResponse(graph_dataset, year, dest_graph_filename, signed_url)
@@ -46,6 +63,12 @@ def create_graph_from_dataset_and_year(graph_dataset: str, year: int):
 
 @app.route("/api/graph/correllation/x-dataset/<string:x_dataset>/y-dataset/<string:y_dataset>")
 def create_correlation_graph_from_datasets(x_dataset: str, y_dataset: str):
+        try:
+            Datasets.value_of(x_dataset)
+            Datasets.value_of(y_dataset)
+        except ValueError as e:
+            abort(400, description=str(e))
+
         # created_graph # TODO (Greg Heiman): Generate correlation graph from both datasets
         graph_dataset = "{}/{} Correllation".format(x_dataset, y_dataset)
         dest_graph_filename, signed_url = upload_and_gen_signed_url_for_graph(created_graph)
@@ -64,6 +87,18 @@ def get_google_cloud_signed_url(filename: str):
         "callbackUrl": signed_url,
     })
 
+@app.errorhandler(400)
+def bad_request_parameters(e):
+    return jsonify(error=str(e)), 400
+
+@app.errorhandler(401)
+def invalid_credentials(e):
+    return jsonify(error=str(e)), 401
+
+@app.errorhandler(403)
+def forbidden(e):
+    return jsonify(error=str(e)), 403
+
 @app.errorhandler(404)
 def resource_not_found(e):
     return jsonify(error=str(e)), 404
@@ -71,14 +106,6 @@ def resource_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return jsonify(error=str(e)), 500
-
-@app.errorhandler(403)
-def forbidden(e):
-    return jsonify(error=str(e)), 403
-
-@app.errorhandler(401)
-def invalid_credentials(e):
-    return jsonify(error=str(e)), 401
 
 def main():
     # Setup web server. Runs on port 5000

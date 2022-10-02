@@ -25,5 +25,5 @@ pipenv install
 
 4. Run the project
 ```
-python src/main.py
+gunicorn -c src/gunicorn.conf.py -b :5000 src.main:app
 ```
