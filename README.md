@@ -1,4 +1,6 @@
-# NASA_Space_Apps_2022_Backend
+# NASA Space Apps 2022 Backend
+## Team: Space Jam
+## Challenge: Take Flight: Making the Most of NASA’s Airborne Data
 Backend Code for NASA Space Apps 2022.
 
 # Dependencies
