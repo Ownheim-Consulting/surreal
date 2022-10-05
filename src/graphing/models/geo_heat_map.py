@@ -1,4 +1,4 @@
-import HeatMap
+from src.graph.models.heat_map import HeatMap
 from enum import Enum
 
 class GeoSpecifier(Enum):

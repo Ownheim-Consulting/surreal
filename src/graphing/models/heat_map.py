@@ -1,4 +1,4 @@
-import Chart
+from src.graph.models.chart import Chart
 
 class HeatMap(Chart):
     lower_heat_boundary: float
