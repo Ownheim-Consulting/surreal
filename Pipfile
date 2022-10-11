@@ -10,13 +10,13 @@ google-auth = "*"
 google-cloud-storage = "*"
 python-dotenv = "*"
 gunicorn = "*"
-
 pandas = "==1.3.5"
 geopandas = "==0.10.2"
 plotly = "==5.10.0"
 matplotlib = "==3.5.3"
 numpy = "==1.21.6"
 scipy = "==1.7.3"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 

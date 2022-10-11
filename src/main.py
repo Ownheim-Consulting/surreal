@@ -7,35 +7,22 @@ Authors Listed in Alphabetical Order
 @Author: Greg Heiman <gregheiman02@gmail.com>, Murphy Ownbey <wmownbey4@gmail.com>
 @Date: 2022-10-01
 """
-from datetime import datetime
-from enum import Enum
-from pathlib import Path
-
 from flask import Flask, abort, jsonify, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 from src.google_cloud import generate_signed_url, upload_blob
 from src.exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
+from src.controllers.chart_controller import chart_controller_blueprint
+
+
+db = SQLAlchemy()
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///surreal.db'
+app.register_blueprint(chart_controller_blueprint)
 
 BUCKET_NAME = "nasa-space-apps-2022-graphs"
 GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
-
-class ChartResponse:
-    """Class representation of responses to graph requests."""
-    chart_tite: str
-    chart_data: str
-
-    def __init__(self, chart_title: str, chart_data: str):
-        self.chart_tite = chart_title
-        self.chart_data = chart_data
-
-    def to_dict(self):
-        """Convert GraphResponse to a dictionary."""
-        return {
-            "chart_title": chart_title,
-            "chart_data": chart_data,
-        }
 
 @app.errorhandler(HttpErrorResponse)
 def handle_http_error_response(e):
@@ -53,9 +40,9 @@ def handle_exception(e):
     if isinstance(e, HttpErrorResponse):
         return e
     # now you're handling non-HTTP exceptions only
-    return jsonify(InternalServerError("Undefined Internal Server Error").to_dict())
+    return jsonify(InternalServerError("Undefined Internal Server Error: {}".format(e)).to_dict())
 
-@app.route("/api/google-cloud/filename/<string:filename>")
+@app.get("/api/google-cloud/filename/<string:filename>")
 def get_google_cloud_signed_url(filename: str):
         """Create a signed URL for a Google Cloud Bucket entity."""
         # The name of the file on Google Cloud
@@ -71,6 +58,9 @@ def get_google_cloud_signed_url(filename: str):
         })
 
 def main():
+    db.init_app(app)
+    with app.app_context():
+        db.create_all() # Create all of the db tables
     # Setup web server. Runs on port 5000
     app.run()
 
