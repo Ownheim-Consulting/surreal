@@ -8,21 +8,21 @@ Authors Listed in Alphabetical Order
 @Date: 2022-10-01
 """
 from flask import Flask, abort, jsonify, render_template
-from flask_sqlalchemy import SQLAlchemy
 
 from src.google_cloud import generate_signed_url, upload_blob
 from src.exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
 from src.controllers.chart_controller import chart_controller_blueprint
-
-
-db = SQLAlchemy()
+from src.database import init_db, db_session
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///surreal.db'
 app.register_blueprint(chart_controller_blueprint)
 
 BUCKET_NAME = "nasa-space-apps-2022-graphs"
 GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 @app.errorhandler(HttpErrorResponse)
 def handle_http_error_response(e):
@@ -58,9 +58,7 @@ def get_google_cloud_signed_url(filename: str):
         })
 
 def main():
-    db.init_app(app)
-    with app.app_context():
-        db.create_all() # Create all of the db tables
+    init_db()
     # Setup web server. Runs on port 5000
     app.run()
 

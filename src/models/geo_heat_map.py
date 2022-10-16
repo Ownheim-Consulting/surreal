@@ -1,22 +1,36 @@
-from src.graph.models.heat_map import HeatMap
 from enum import Enum
+import uuid
 
-class GeoSpecifier(Enum):
-    COUNTY = 1
+from src.database import Base
 
-    @classmethod
-    def value_of(cls, value):
-        """Compare the value of a string to enum values."""
-        # The class of enum to compare the string to.
-        # cls = "your-enum-name"
-        # The string value to compare.
-        # value = "your-string=value"
-        for k, v in cls.__members__.items():
-            if k == value:
-                return v
-        else:
-            raise ValueError(f"'{cls.__name__}' enum not found for '{value}'")
+from sqlalchemy import Column, Float, String, Integer
 
-class GeoHeatMap(HeatMap):
-    geo_region: str
-    geo_specifier: GeoSpecifier
+class GeoHeatMap(Base):
+    __tablename__ = 'geo_heat_maps'
+
+    id = Column('geo_heat_map_id', Integer, primary_key=True, autoincrement=True)
+    title = Column(String(256))
+    dataset_name = Column(String(256)) # Eg. Avg. Sal
+    viewing_area_name = Column(String(256)) # Eg. USA
+    dataset_level = Column(String(256)) # Eg. County
+    geojson_uri = Column(String(512))
+    zjson_uri = Column(String(512))
+
+    def __init__(self, title, dataset_name: str, viewing_area_name: str, dataset_level: str, json_uri, zjson_uri):
+        self.title = title
+        self.dataset_name = dataset_name
+        self.viewing_area_name = viewing_area_name
+        self.dataset_level = dataset_level
+        self.geojson_uri = json_uri
+        self.zjson_uri = zjson_uri
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "dataset_name": self.dataset_name,
+            "viewing_area": self.viewing_area_name,
+            "dataset_level": self.dataset_level,
+            "geojson_uri": self.geojson_uri,
+            "zjson_uri": self.zjson_uri,
+        }

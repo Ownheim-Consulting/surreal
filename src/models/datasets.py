@@ -11,10 +11,17 @@ class MetaEnum(EnumMeta):
 class BaseEnum(Enum, metaclass=MetaEnum):
     pass
 
-class WeatherDatasets(BaseEnum):
-    T_AVG = 1
-    PCP_AVG = 2
-    SEVERE_WEATHER_ALERTS = 3
+class WeatherDatasets(str, BaseEnum):
+    T_AVG = 'T_AVG'
+    PCP_AVG = 'PCP_AVG'
+    SEVERE_WEATHER_ALERTS = 'SEVERE_WEATHER_ALERTS'
 
-class EconomicDatasets(BaseEnum):
-    AVG_SAL = 1
+class EconomicDatasets(str, BaseEnum):
+    UNEMP = 'UNEMP'
+    AVG_SAL = 'AVG_SAL'
+
+class ViewingAreas(str, BaseEnum):
+    USA = 'USA'
+
+class DatasetLevels(str, BaseEnum):
+    COUNTY = 'COUNTY'
