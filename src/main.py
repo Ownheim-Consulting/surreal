@@ -13,12 +13,10 @@ from src.google_cloud import generate_signed_url, upload_blob
 from src.exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
 from src.controllers.chart_controller import chart_controller_blueprint
 from src.database import init_db, db_session
+from src.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 
 app = Flask(__name__)
 app.register_blueprint(chart_controller_blueprint)
-
-BUCKET_NAME = "nasa-space-apps-2022-graphs"
-GC_AUTH_FILE = "space-app-364302-3ce902359f75.json"
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
@@ -47,7 +45,7 @@ def get_google_cloud_signed_url(filename: str):
         """Create a signed URL for a Google Cloud Bucket entity."""
         # The name of the file on Google Cloud
         # filename = "your-filename"
-        signed_url = generate_signed_url(GC_AUTH_FILE, BUCKET_NAME, filename)
+        signed_url = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, filename)
 
         if signed_url is None:
             raise ResourceNotFound("Could not generate signed URL for filename: {}".format(filename))

@@ -23,10 +23,12 @@ for fip in df['fips']:
         county_names.append("Unknown County Name")
 df['county_name'] = county_names
 
-# Map between county FIPS number and the unemployment
-fig = px.choropleth_mapbox(df, geojson=counties, locations='fips', color='unemp',
-                           color_continuous_scale='Viridis', range_color=(0, 12),
-                           mapbox_style="carto-positron", zoom=3, center={"lat":37.0902, "lon":-95.7129},
-                           opacity=0.5, labels={'unemp':'Unemployment Rate'}, hover_name='county_name')
-fig.update_layout(margin={ "r": 0, "t": 0, "l": 0, "b": 0 })
-fig.show()
+df.to_csv('data_usa_counties_unemp.csv', index=False)
+
+# # Map between county FIPS number and the unemployment
+# fig = px.choropleth_mapbox(df, geojson=counties, locations='fips', color='unemp',
+#                            color_continuous_scale='Viridis', range_color=(0, 12),
+#                            mapbox_style="carto-positron", zoom=3, center={"lat":37.0902, "lon":-95.7129},
+#                            opacity=0.5, labels={'unemp':'Unemployment Rate'})
+# fig.update_layout(margin={ "r": 0, "t": 0, "l": 0, "b": 0 })
+# fig.show()
