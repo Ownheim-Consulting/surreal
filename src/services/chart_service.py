@@ -3,7 +3,7 @@ from src.google_cloud import generate_signed_url
 from src.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 from src.models.datasets import EconomicDatasets, WeatherDatasets, ViewingAreas, DatasetLevels
 
-def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str):
+def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = ChoroplethMap.query.filter_by(dataset_name = dataset_name)\
     .filter_by(viewing_area_name = viewing_area)\
     .filter_by(dataset_level = dataset_level).first()
