@@ -34,6 +34,7 @@ class ChoroplethMap(Base):
         return {
             "id": self.id,
             "title": self.title,
+            "legend_title": self.legend_title,
             "dataset_name": self.dataset_name,
             "viewing_area": self.viewing_area_name,
             "dataset_level": self.dataset_level,
