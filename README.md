@@ -1,21 +1,31 @@
-# NASA Space Apps 2022 Backend
-## Team: Space Jam
-## Challenge: Take Flight: Making the Most of NASA’s Airborne Data
-Backend Code for NASA Space Apps 2022.
+# Surreal 
+Backend code for the NASA Space Apps 2022 competition. Created by Space Jam.
+
+Space Jam consists of the following members (listed in alphabetical order):
+- Akim Niyo
+- Dimitri Senevitratne 
+- Fernando Rubio Garcia 
+- Grant Johnson
+- Greg Heiman
+- Murphy Ownbey
+The challenge: Take Flight: Making the Most of NASA’s Airborne Data
+
+Surreal combines NASA airbourne data with Census Bureau economic data to provide
+dynamic visualizations in an easy to use mobile interface (housed in a different repository).
 
 # Dependencies
 - Python 3.10
 - Pipenv
 
 # How to Run
-This project uses pipenv for dependency management. 
+This project uses Pipenv for dependency management. 
 
-1. Install pipenv
+1. Install Pipenv
 ```
 pip install --user pipenv
 ```
 
-2. Begin pipenv shell
+2. Begin Pipenv shell
 ```
 pipenv shell
 ```
@@ -25,7 +35,7 @@ pipenv shell
 pipenv install
 ```
 
-4. Run the project
+4. Run the project (Gunicorn only works on Linux/Unix systems)
 ```
 gunicorn -c src/gunicorn.conf.py -b :5000 src.main:app
 ```
@@ -47,3 +57,9 @@ The data will be returned in the following format:
 The `callbackUrl` field is a signed URL from Google Cloud that is valid for 1 hour. With this URL you can download and view the visualizations.
 
 You can change the final parameter to a variety of file names in order to see multiple different data sets visualized.
+
+There is also an endpoint to see what the graph data looks like. You can access this endpoint at the following URL:
+
+`https://space-app-364302.uc.r.appspot.com/api/chart/choropleth-map/dataset/UNEMP/viewing-area/USA/level/COUNTY`
+
+This will return a JSON with all of the data needed to plot the graph using Plotly.js.
