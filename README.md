@@ -8,6 +8,7 @@ Space Jam consists of the following members (listed in alphabetical order):
 - Grant Johnson
 - Greg Heiman
 - Murphy Ownbey
+
 The challenge: Take Flight: Making the Most of NASA’s Airborne Data
 
 Surreal combines NASA airbourne data with Census Bureau economic data to provide
