@@ -25,3 +25,11 @@ class ViewingAreas(str, BaseEnum):
 
 class DatasetLevels(str, BaseEnum):
     COUNTY = 'COUNTY'
+
+class GeoDataFormat(str, BaseEnum):
+    JSON = 'JSON'
+    CSV = 'CSV'
+
+class ZDataFormat(str, BaseEnum):
+    JSON = 'JSON'
+    CSV = 'CSV'
