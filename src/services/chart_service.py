@@ -1,6 +1,6 @@
 from src.models.choropleth_map import ChoroplethMap
-from src.google_cloud import generate_signed_url
-from src.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+from src.utils.google_cloud import generate_signed_url
+from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 from src.models.datasets import EconomicDatasets, WeatherDatasets, ViewingAreas, DatasetLevels
 
 def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
