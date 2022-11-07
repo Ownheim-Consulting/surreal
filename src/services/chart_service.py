@@ -54,7 +54,7 @@ def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str)
     return choropleth_map
 
 def get_all_charts() -> list[ChartsResponse]:
-    charts = ChoroplethMap.query.all()
+    charts = Chart.query.all()
 
     chart_responses = []
     for chart in charts:
