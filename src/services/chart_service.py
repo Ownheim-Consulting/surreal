@@ -3,15 +3,64 @@ from src.utils.google_cloud import generate_signed_url
 from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 from src.models.datasets import EconomicDatasets, WeatherDatasets, ViewingAreas, DatasetLevels
 
+class ChartsResponse:
+    id: int
+    chart_type: str
+    title: str
+    subtitle: str
+    url: str
+
+    def __init__(id: int, chart_type: str, title: str, subtitle: str, url: str):
+        self.id = id
+        self.chart_type = chart_type
+        self.title = title
+        self.subtitle = subtitle
+        self.url = url
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "subtitle": self.subtitle,
+            "chart_type": self.chart_type,
+            "url": self.url,
+        }
+
+def map_from_chart_to_charts_response(chart):
+    chart_response = ChartsResponse
+    chart_response.id = chart.id
+    chart_response.chart_type = chart.chart_type
+    chart_response.title = chart.title
+    chart_response.subtitle = ""
+
+    # Map CHOROPLETH_MAP to choropleth-map
+    chart_type_str = chart_response.chart_type.lower().replace('_', '-')
+    chart_response.url = "api/chart/{}/dataset/{}/viewing-area/{}/level/{}"\
+    .format(chart_type_str, chart.dataset_name, chart.viewing_area_name, chart.dataset_level)
+    return chart_response
+
+def _fix_choropleth_uri(chart: ChoroplethMap):
+    # If the URIs don't contain http:// or https:// then assume they are files in GC
+    if "http://" not in chart.geo_data_uri or "https://" not in chart.geo_data_uri:
+        chart.geo_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, chart.geo_data_uri)
+    if "http://" not in chart.z_data_uri or "https://" not in chart.z_data_uri:
+        chart.z_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, chart.z_data_uri)
+
+    return chart
+
 def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = ChoroplethMap.query.filter_by(dataset_name = dataset_name)\
     .filter_by(viewing_area_name = viewing_area)\
     .filter_by(dataset_level = dataset_level).first()
 
-    # If the URIs don't contain http:// or https:// then assume they are files in GC
-    if "http://" not in choropleth_map.geo_data_uri or "https://" not in choropleth_map.geo_data_uri:
-        choropleth_map.geo_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, choropleth_map.geo_data_uri)
-    if "http://" not in choropleth_map.z_data_uri or "https://" not in choropleth_map.z_data_uri:
-        choropleth_map.z_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, choropleth_map.z_data_uri)
-
+    choropleth_map = _fix_choropleth_uri(choropleth_map);
     return choropleth_map
+
+def get_all_charts():
+    charts = ChoroplethMap.query.all()
+
+    chart_responses = []
+    for chart in charts:
+        chart_response = map_from_chart_to_charts_response(chart)
+        chart_responses.append(chart_response)
+    return chart_responses

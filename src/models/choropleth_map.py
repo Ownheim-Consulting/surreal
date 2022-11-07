@@ -16,6 +16,7 @@ class ChoroplethMap(Base):
     geo_data_format = Column(String(50)) # Eg. JSON, CSV
     z_data_uri = Column(String(512))
     z_data_format = Column(String(50)) # Eg. JSON, CSV
+    chart_type = Column(String(256))
 
     def __init__(self, title: str, dataset_name: (WeatherDatasets or EconomicDatasets),
                  viewing_area_name: ViewingAreas, dataset_level: DatasetLevels,
@@ -29,11 +30,13 @@ class ChoroplethMap(Base):
         self.geo_data_format = geo_data_format.value
         self.z_data_uri = z_data_uri
         self.z_data_format = z_data_format.value
+        self.chart_type = "CHOROPLETH_MAP"
 
     def to_dict(self):
         return {
             "id": self.id,
             "title": self.title,
+            "chart_type": self.chart_type,
             "legend_title": self.legend_title,
             "dataset_name": self.dataset_name,
             "viewing_area": self.viewing_area_name,
