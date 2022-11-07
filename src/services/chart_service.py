@@ -4,12 +4,6 @@ from src.utils.google_cloud import generate_signed_url
 from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 
 class ChartsResponse:
-    id: int
-    type: str
-    title: str
-    subtitle: str
-    url: str
-
     def __init__(self, id: int, type: str, title: str, subtitle: str, url: str) -> None:
         self.id = id
         self.type = type
@@ -30,21 +24,18 @@ class ChartsResponse:
     def from_chart(cls, chart: Chart):
         return cls(chart.id, chart.type, chart.title, chart.subtitle, chart.chart_url())
 
-def _fix_choropleth_uri(chart: ChoroplethMap) -> ChoroplethMap:
+def _fix_uri_with_signed_url(*uris):
+    # Add signed uri for file if it is missing http:// or https://
     # If the URIs don't contain http:// or https:// then assume they are files in GC
-    if "http://" not in chart.geo_data_uri or "https://" not in chart.geo_data_uri:
-        chart.geo_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, chart.geo_data_uri)
-    if "http://" not in chart.z_data_uri or "https://" not in chart.z_data_uri:
-        chart.z_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, chart.z_data_uri)
-
-    return chart
+    uris = [generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, uri) if ('http://' not in uri or 'https://' not in uri) else uri for uri in uris]
+    return uris
 
 def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = ChoroplethMap.query.filter_by(dataset_name = dataset_name)\
     .filter_by(viewing_area_name = viewing_area)\
     .filter_by(dataset_level = dataset_level).first()
 
-    choropleth_map = _fix_choropleth_uri(choropleth_map);
+    (choropleth_map.geo_data_uri, choropleth_map.z_data_uri) = _fix_uri_with_signed_url(choropleth_map.geo_data_uri, choropleth_map.z_data_uri)
     return choropleth_map
 
 def get_all_charts() -> list:
