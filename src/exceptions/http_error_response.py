@@ -1,12 +1,11 @@
 class HttpErrorResponse(Exception):
-    def __init__(self, code=None, name=None, message=None):
+    def __init__(self, code=None, name=None, message=None) -> None:
         super.__init__()
-        if code is not None:
-            self.code = code
+        self.code = code
         self.name = name
         self.message = message
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "code": self.code,
             "name": self.name,
@@ -14,22 +13,13 @@ class HttpErrorResponse(Exception):
         }
 
 class BadRequestParameters(HttpErrorResponse):
-    def __init__(self, message=None, code=400, name="BAD_REQUEST_PARAMETERS"):
-        self.code = code
-        self.message = message
-        self.name = name
-        super(HttpErrorResponse, self).__init__(self, code, name, message)
+    def __init__(self, message=None) -> None:
+        super(HttpErrorResponse, self).__init__(self, 400, "BAD_REQUEST_PARAMETERS", message)
 
 class ResourceNotFound(HttpErrorResponse):
-    def __init__(self, message=None, code=404, name="RESOURCE_NOT_FOUND"):
-        self.code = code
-        self.message = message
-        self.name = name
-        super(HttpErrorResponse, self).__init__(self, code, name, message)
+    def __init__(self, message=None) -> None:
+        super(HttpErrorResponse, self).__init__(self, 404, "RESOURCE_NOT_FOUND", message)
 
 class InternalServerError(HttpErrorResponse):
-    def __init__(self, message=None, code=500, name="INTERNAL_SERVER_ERROR"):
-        self.code = code
-        self.message = message
-        self.name = name
-        super(HttpErrorResponse, self).__init__(self, code, name, message)
+    def __init__(self, message=None) -> None:
+        super(HttpErrorResponse, self).__init__(self, 500, "INTERNAL_SERVER_ERROR", message)
