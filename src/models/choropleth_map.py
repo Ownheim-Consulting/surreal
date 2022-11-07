@@ -1,22 +1,21 @@
 from src.database import Base
 from src.models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
+from src.models.map_chart import MapChart
 
-from sqlalchemy import Column, Float, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
 
-class ChoroplethMap(Base):
-    __tablename__ = 'choropleth_maps'
+class ChoroplethMap(MapChart):
+    __tablename__ = 'choropleth_map'
 
-    id = Column('choropleth_map_id', Integer, primary_key=True, autoincrement=True)
-    title = Column(String(256))
-    legend_title = Column(String(256))
-    dataset_name = Column(String(256)) # Eg. Avg. Sal or Avg. Temp
-    viewing_area_name = Column(String(256)) # Eg. USA
-    dataset_level = Column(String(256)) # Eg. County
+    id = Column(Integer, ForeignKey("chart.id"), primary_key=True)
     geo_data_uri = Column(String(512))
     geo_data_format = Column(String(50)) # Eg. JSON, CSV
     z_data_uri = Column(String(512))
     z_data_format = Column(String(50)) # Eg. JSON, CSV
-    chart_type = Column(String(256))
+
+    __mapper_args__ = {
+        "polymorphic_identity": "choropleth_map"
+    }
 
     def __init__(self, title: str, dataset_name: (WeatherDatasets or EconomicDatasets),
                  viewing_area_name: ViewingAreas, dataset_level: DatasetLevels,
@@ -30,13 +29,13 @@ class ChoroplethMap(Base):
         self.geo_data_format = geo_data_format.value
         self.z_data_uri = z_data_uri
         self.z_data_format = z_data_format.value
-        self.chart_type = "CHOROPLETH_MAP"
+        self.chart_type = __mapper_args__.polymorphic_identity
 
     def to_dict(self):
         return {
             "id": self.id,
             "title": self.title,
-            "chart_type": self.chart_type,
+            "type": self.type,
             "legend_title": self.legend_title,
             "dataset_name": self.dataset_name,
             "viewing_area": self.viewing_area_name,
@@ -46,3 +45,7 @@ class ChoroplethMap(Base):
             "z_data_uri": self.z_data_uri,
             "z_data_format": self.z_data_format,
         }
+
+    def chart_url(self):
+        return "/api/chart/choropleth-map/dataset/{}/viewing-area/{}/level/{}"\
+            .format(self.dataset_name, self.viewing_area_name, self.dataset_level)

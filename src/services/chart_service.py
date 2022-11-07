@@ -5,14 +5,14 @@ from src.models.datasets import EconomicDatasets, WeatherDatasets, ViewingAreas,
 
 class ChartsResponse:
     id: int
-    chart_type: str
+    type: str
     title: str
     subtitle: str
     url: str
 
-    def __init__(id: int, chart_type: str, title: str, subtitle: str, url: str):
+    def __init__(id: int, type: str, title: str, subtitle: str, url: str):
         self.id = id
-        self.chart_type = chart_type
+        self.type = type
         self.title = title
         self.subtitle = subtitle
         self.url = url
@@ -22,21 +22,18 @@ class ChartsResponse:
             "id": self.id,
             "title": self.title,
             "subtitle": self.subtitle,
-            "chart_type": self.chart_type,
+            "type": self.type,
             "url": self.url,
         }
 
 def map_from_chart_to_charts_response(chart):
     chart_response = ChartsResponse
     chart_response.id = chart.id
-    chart_response.chart_type = chart.chart_type
+    chart_response.type = chart.type
     chart_response.title = chart.title
-    chart_response.subtitle = ""
+    chart_response.subtitle = chart.subtitle
+    chart_response.url = chart.chart_url()
 
-    # Map CHOROPLETH_MAP to choropleth-map
-    chart_type_str = chart_response.chart_type.lower().replace('_', '-')
-    chart_response.url = "api/chart/{}/dataset/{}/viewing-area/{}/level/{}"\
-    .format(chart_type_str, chart.dataset_name, chart.viewing_area_name, chart.dataset_level)
     return chart_response
 
 def _fix_choropleth_uri(chart: ChoroplethMap):
