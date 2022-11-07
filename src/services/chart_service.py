@@ -53,7 +53,7 @@ def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str)
     choropleth_map = _fix_choropleth_uri(choropleth_map);
     return choropleth_map
 
-def get_all_charts() -> list[ChartsResponse]:
+def get_all_charts() -> list:
     charts = Chart.query.all()
 
     chart_responses = []
