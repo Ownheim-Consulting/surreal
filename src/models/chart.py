@@ -1,3 +1,5 @@
+import abc
+
 from src.database import Base
 
 from sqlalchemy import Column, String, Integer
@@ -14,3 +16,11 @@ class Chart(Base):
         "polymorphic_identity": "chart",
         "polymorphic_on": type,
     }
+
+    @abc.abstractmethod
+    def chart_url(self):
+        raise NotImplementedError("Must implement chart_url(self) method in subclass of Chart")
+
+    @abc.abstractmethod
+    def to_dict(self):
+        raise NotImplementedError("Must implement to_dict(self) method in sublass of Chart")

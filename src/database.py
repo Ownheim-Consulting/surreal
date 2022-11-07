@@ -1,14 +1,21 @@
 import os
+import abc
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 
 engine = create_engine('sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'surreal.db'))
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
-Base = declarative_base()
+
+# Declare a Base that extends ABCMeta so that @abc.abstractmethod can be used
+class DeclarativeBaseABCMeta(DeclarativeMeta, abc.ABCMeta):
+    pass
+class Base(declarative_base(metaclass=DeclarativeBaseABCMeta)):
+    __abstract__ = True
+
 Base.query = db_session.query_property()
 
 def init_db():
