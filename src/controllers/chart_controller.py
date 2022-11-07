@@ -29,7 +29,7 @@ def charts():
 
     response = []
     for chart in charts:
-        response.append(chart.to_dict(chart))
+        response.append(chart.to_dict())
     response = jsonify(response)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response

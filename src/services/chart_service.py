@@ -26,15 +26,9 @@ class ChartsResponse:
             "url": self.url,
         }
 
-def map_from_chart_to_charts_response(chart: Chart) -> ChartsResponse:
-    chart_response = ChartsResponse
-    chart_response.id = chart.id
-    chart_response.type = chart.type
-    chart_response.title = chart.title
-    chart_response.subtitle = chart.subtitle
-    chart_response.url = chart.chart_url()
-
-    return chart_response
+    @classmethod
+    def from_chart(cls, chart: Chart):
+        return cls(chart.id, chart.type, chart.title, chart.subtitle, chart.chart_url())
 
 def _fix_choropleth_uri(chart: ChoroplethMap) -> ChoroplethMap:
     # If the URIs don't contain http:// or https:// then assume they are files in GC
@@ -58,6 +52,6 @@ def get_all_charts() -> list:
 
     chart_responses = []
     for chart in charts:
-        chart_response = map_from_chart_to_charts_response(chart)
+        chart_response = ChartsResponse.from_chart(chart)
         chart_responses.append(chart_response)
     return chart_responses
