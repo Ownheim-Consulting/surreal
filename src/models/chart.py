@@ -17,10 +17,18 @@ class Chart(Base):
         "polymorphic_on": type,
     }
 
+    def __init__(self,
+                 title: str,
+                 subtitle: str,
+                 type: str) -> None:
+        self.title = title
+        self.subtitle = subtitle
+        self.type = type
+
     @abc.abstractmethod
-    def chart_url(self):
+    def chart_url(self) -> str:
         raise NotImplementedError("Must implement chart_url(self) method in subclass of Chart")
 
     @abc.abstractmethod
-    def to_dict(self):
+    def to_dict(self) -> dict:
         raise NotImplementedError("Must implement to_dict(self) method in sublass of Chart")

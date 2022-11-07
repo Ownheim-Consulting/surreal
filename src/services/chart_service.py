@@ -1,7 +1,7 @@
 from src.models.choropleth_map import ChoroplethMap
+from src.models.chart import Chart
 from src.utils.google_cloud import generate_signed_url
 from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
-from src.models.datasets import EconomicDatasets, WeatherDatasets, ViewingAreas, DatasetLevels
 
 class ChartsResponse:
     id: int
@@ -10,14 +10,14 @@ class ChartsResponse:
     subtitle: str
     url: str
 
-    def __init__(id: int, type: str, title: str, subtitle: str, url: str):
+    def __init__(self, id: int, type: str, title: str, subtitle: str, url: str) -> None:
         self.id = id
         self.type = type
         self.title = title
         self.subtitle = subtitle
         self.url = url
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "title": self.title,
@@ -26,7 +26,7 @@ class ChartsResponse:
             "url": self.url,
         }
 
-def map_from_chart_to_charts_response(chart):
+def map_from_chart_to_charts_response(chart: Chart) -> ChartsResponse:
     chart_response = ChartsResponse
     chart_response.id = chart.id
     chart_response.type = chart.type
@@ -36,7 +36,7 @@ def map_from_chart_to_charts_response(chart):
 
     return chart_response
 
-def _fix_choropleth_uri(chart: ChoroplethMap):
+def _fix_choropleth_uri(chart: ChoroplethMap) -> ChoroplethMap:
     # If the URIs don't contain http:// or https:// then assume they are files in GC
     if "http://" not in chart.geo_data_uri or "https://" not in chart.geo_data_uri:
         chart.geo_data_uri = generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, chart.geo_data_uri)
@@ -53,7 +53,7 @@ def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str)
     choropleth_map = _fix_choropleth_uri(choropleth_map);
     return choropleth_map
 
-def get_all_charts():
+def get_all_charts() -> list[ChartsResponse]:
     charts = ChoroplethMap.query.all()
 
     chart_responses = []

@@ -17,21 +17,26 @@ class ChoroplethMap(MapChart):
         "polymorphic_identity": "choropleth_map"
     }
 
-    def __init__(self, title: str, dataset_name: (WeatherDatasets or EconomicDatasets),
-                 viewing_area_name: ViewingAreas, dataset_level: DatasetLevels,
-                 geo_data_uri: str, geo_data_format: GeoDataFormat,
-                 z_data_uri: str, z_data_format: ZDataFormat):
-        self.title = title
-        self.dataset_name = dataset_name.value
-        self.viewing_area_name = viewing_area_name.value
-        self.dataset_level = dataset_level.value
+    def __init__(self,
+                 title: str,
+                 subtitle: str,
+                 type: str,
+                 legend_title: str,
+                 dataset_name: (WeatherDatasets or EconomicDatasets),
+                 viewing_area_name: ViewingAreas,
+                 dataset_level: DatasetLevels,
+                 geo_data_uri: str,
+                 geo_data_format: GeoDataFormat,
+                 z_data_uri: str,
+                 z_data_format: ZDataFormat) -> None:
+        super(MapChart, self).__init__(title, subtitle, type, legend_title,\
+                                       dataset_name, viewing_area_name, dataset_level)
         self.geo_data_uri = geo_data_uri
         self.geo_data_format = geo_data_format.value
         self.z_data_uri = z_data_uri
         self.z_data_format = z_data_format.value
-        self.chart_type = __mapper_args__.polymorphic_identity
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "title": self.title,
@@ -46,6 +51,6 @@ class ChoroplethMap(MapChart):
             "z_data_format": self.z_data_format,
         }
 
-    def chart_url(self):
+    def chart_url(self) -> str:
         return "/api/chart/choropleth-map/dataset/{}/viewing-area/{}/level/{}"\
             .format(self.dataset_name, self.viewing_area_name, self.dataset_level)
