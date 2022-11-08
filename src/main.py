@@ -7,13 +7,13 @@ Authors Listed in Alphabetical Order
 @Author: Greg Heiman <gregheiman02@gmail.com>, Murphy Ownbey <wmownbey4@gmail.com>
 @Date: 2022-10-01
 """
-from flask import Flask, abort, jsonify, render_template
-
 from src.exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
 from src.controllers.chart_controller import chart_controller_blueprint
 from src.controllers.google_cloud_controller import google_cloud_controller_blueprint 
 from src.database import init_db, db_session
 from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+
+from flask import Flask, abort, jsonify, render_template
 
 app = Flask(__name__)
 app.register_blueprint(chart_controller_blueprint)
@@ -40,6 +40,12 @@ def handle_exception(e):
         return e
     # now you're handling non-HTTP exceptions only
     return jsonify(InternalServerError("Undefined Internal Server Error: {}".format(e)).to_dict())
+
+@app.after_request
+def after_request(response):
+    """Perform logic on each response before sending it back to client."""
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 def main():
     init_db()

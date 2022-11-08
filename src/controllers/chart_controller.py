@@ -2,7 +2,7 @@ from flask import jsonify, Blueprint
 
 from src.exceptions.http_error_response import ResourceNotFound, BadRequestParameters
 from src.models.datasets import WeatherDatasets, EconomicDatasets, ViewingAreas, DatasetLevels
-from src.services.chart_service import get_all_charts, get_choropleth_map
+import src.services.chart_service as chart_service
 
 chart_controller_blueprint = Blueprint('charts', __name__)
 
@@ -15,21 +15,17 @@ def get_choropleth_map_for_dataset(dataset_name: (WeatherDatasets or EconomicDat
     if dataset_level not in DatasetLevels:
         raise BadRequestParameters("Dataset level not a valid dataset level: {}".format(dataset_level))
 
-    choropleth_map = get_choropleth_map(dataset_name, viewing_area, dataset_level)
+    choropleth_map = chart_service.get_choropleth_map(dataset_name, viewing_area, dataset_level)
 
-    if choropleth_map is None:
-        raise ResourceNotFound("Could not find choropleth map for dataset: {}".format(dataset_name))
-    response = jsonify(choropleth_map.to_dict())
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    if not choropleth_map:
+        raise ResourceNotFound("Could not find choropleth map for dataset: {}, viewing-area: {}, and dataset-level: {}"\
+                               .format(dataset_name, viewing_area, dataset_level))
+    return jsonify(choropleth_map.to_dict())
 
 @chart_controller_blueprint.get("/api/charts")
 def charts():
-    charts = get_all_charts()
+    charts = chart_service.get_all_charts()
 
-    response = []
-    for chart in charts:
-        response.append(chart.to_dict())
-    response = jsonify(response)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    if not charts:
+        raise ResourceNotFound("Could not find any charts")
+    return jsonify([chart.to_dict() for chart in charts])

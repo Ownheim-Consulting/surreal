@@ -4,6 +4,8 @@ import datetime
 import hashlib
 import sys
 
+from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+
 from dotenv import load_dotenv
 from google.oauth2 import service_account
 from google.cloud import storage
@@ -11,6 +13,14 @@ import six
 from six.moves.urllib.parse import quote
 
 load_dotenv()
+
+def add_signed_url_if_missing(*uris):
+    """Add a signed url to a uri if it is missing http:// or https://"""
+    # A variable amoutn of uris
+    # uris = "uri1", "uri2"
+    # If the URIs don't contain http:// or https:// then assume they are files in GC
+    uris = [generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, uri) if ('http://' not in uri or 'https://' not in uri) else uri for uri in uris]
+    return uris
 
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""

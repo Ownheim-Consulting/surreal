@@ -1,4 +1,4 @@
-import abc
+from abc import abstractmethod
 
 from src.database import Base
 
@@ -25,10 +25,10 @@ class Chart(Base):
         self.subtitle = subtitle
         self.type = type
 
-    @abc.abstractmethod
+    @abstractmethod
     def chart_url(self) -> str:
         raise NotImplementedError("Must implement chart_url(self) method in subclass of Chart")
 
-    @abc.abstractmethod
+    @abstractmethod
     def to_dict(self) -> dict:
         raise NotImplementedError("Must implement to_dict(self) method in sublass of Chart")
