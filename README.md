@@ -38,7 +38,7 @@ pipenv install
 
 4. Run the project (Gunicorn only works on Linux/Unix systems)
 ```
-gunicorn -c src/gunicorn.conf.py -b :5000 src.main:app
+gunicorn -c gunicorn.conf.py -b :5000 main:app
 ```
 
 # Public API

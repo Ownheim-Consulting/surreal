@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint
 
-from src.utils.google_cloud import generate_signed_url
-from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+from utils.google_cloud import generate_signed_url
+from utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 
 google_cloud_controller_blueprint = Blueprint('google-cloud', __name__)
 

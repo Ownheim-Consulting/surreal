@@ -1,7 +1,7 @@
-from src.models.chart import Chart
-from src.models.choropleth_map import ChoroplethMap
-from src.models.response_model import ResponseModel
-import src.utils.google_cloud as GC
+from models.chart import Chart
+from models.choropleth_map import ChoroplethMap
+from models.response_model import ResponseModel
+import utils.google_cloud as GC
 
 class ChartsResponse(ResponseModel):
     def __init__(self, id: int, type: str, title: str, subtitle: str, url: str) -> None:
@@ -31,8 +31,13 @@ def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str)
 
     if choropleth_map:
         (choropleth_map.geo_data_uri, choropleth_map.z_data_uri) = GC.add_signed_url_if_missing(choropleth_map.geo_data_uri, choropleth_map.z_data_uri)
+    else:
+        raise ResourceNotFound("Could not find choropleth map for dataset: {}, viewing-area: {}, and dataset-level: {}"\
+                               .format(dataset_name, viewing_area, dataset_level))
     return choropleth_map
 
 def get_all_charts() -> list:
     charts = [ChartsResponse.from_chart(chart) for chart in Chart.query.all()]
+    if not charts:
+        raise ResourceNotFound("Could not find any charts")
     return charts
