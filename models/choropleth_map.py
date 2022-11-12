@@ -1,7 +1,7 @@
-from src.database import Base
-from src.models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
-from src.models.map_chart import MapChart
-from src.models.response_model import ResponseModel
+from database import Base
+from models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
+from models.map_chart import MapChart
+from models.response_model import ResponseModel
 
 from sqlalchemy import Column, String, Integer, ForeignKey
 

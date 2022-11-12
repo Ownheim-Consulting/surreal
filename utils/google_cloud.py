@@ -4,7 +4,7 @@ import datetime
 import hashlib
 import sys
 
-from src.utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+from utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 
 from dotenv import load_dotenv
 from google.oauth2 import service_account
