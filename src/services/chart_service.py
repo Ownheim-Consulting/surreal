@@ -33,6 +33,14 @@ def get_choropleth_map(dataset_name: str, viewing_area: str, dataset_level: str)
         (choropleth_map.geo_data_uri, choropleth_map.z_data_uri) = GC.add_signed_url_if_missing(choropleth_map.geo_data_uri, choropleth_map.z_data_uri)
     return choropleth_map
 
+def get_choropleth_map_by_id(choropleth_chart_id: int) -> ChoroplethMap:
+    choropleth_map: ChoroplethMap = ChoroplethMap.query.filter_by(chart_id = choropleth_chart_id).first()
+    return choropleth_map
+
 def get_all_charts() -> list:
     charts = [ChartsResponse.from_chart(chart) for chart in Chart.query.all()]
     return charts
+
+def get_chart_by_id(chart_id: int) -> Chart:
+    chart: Chart = Chart.query.filter_by(chart_id = chart_id).first()
+    return chart

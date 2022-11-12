@@ -22,6 +22,16 @@ def get_choropleth_map_for_dataset(dataset_name: (WeatherDatasets or EconomicDat
                                .format(dataset_name, viewing_area, dataset_level))
     return jsonify(choropleth_map.to_dict())
 
+@chart_controller_blueprint.get("/api/chart/choropleth-map/<int:choropleth_chart_id>")
+def get_choropleth_map(choropleth_chart_id: int) -> Response:
+    choropleth_map: ChoroplethMap = chart_service.get_choropleth_map_by_id(choropleth_chart_id)
+    return choropleth_map
+
+@chart_controller_blueprint.get("/api/chart/<int:chart_id>")
+def get_chart(chart_id: int) -> Response:
+    chart: Chart = chart_service.get_chart_by_id(chart_id)
+    return jsonify(chart.to_dict())
+
 @chart_controller_blueprint.get("/api/charts")
 def charts():
     charts = chart_service.get_all_charts()
