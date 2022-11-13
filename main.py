@@ -7,7 +7,7 @@ Authors Listed in Alphabetical Order
 @Author: Greg Heiman <gregheiman02@gmail.com>, Murphy Ownbey <wmownbey4@gmail.com>
 @Date: 2022-10-01
 """
-from flask import abort, Flask, jsonify, Response
+from flask import abort, Blueprint, Flask, jsonify, Response
 
 from controllers.chart_controller import chart_controller_blueprint
 from controllers.google_cloud_controller import google_cloud_controller_blueprint 
@@ -15,9 +15,13 @@ from database import init_db, db_session
 from exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
 from utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
 
+# Register base url for v1 api services
+v1_blueprint = Blueprint('v1_api', __name__)
+v1_blueprint.register_blueprint(chart_controller_blueprint, url_prefix="/chart-service")
+v1_blueprint.register_blueprint(google_cloud_controller_blueprint, url_prefix="/google-cloud-service")
+
 app = Flask(__name__)
-app.register_blueprint(chart_controller_blueprint)
-app.register_blueprint(google_cloud_controller_blueprint)
+app.register_blueprint(v1_blueprint, url_prefix="/api/v1")
 
 @app.teardown_appcontext
 def shutdown_session(exception=None) -> None:

@@ -19,7 +19,7 @@ class MapChart(Chart):
                  dataset_name: (WeatherDatasets or EconomicDatasets),
                  viewing_area_name: ViewingAreas,
                  dataset_level: DatasetLevels) -> None:
-        super(Chart, self).__init__(title, subtitle, type)
+        super().__init__(title, subtitle, type)
         self.legend_title = legend_title
         self.dataset_name = dataset_name
         self.viewing_area_name = viewing_area_name

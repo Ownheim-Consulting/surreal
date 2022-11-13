@@ -1,10 +1,11 @@
 from abc import abstractmethod
 
 from database import Base
+from models.response_model import ResponseModel
 
 from sqlalchemy import Column, String, Integer
 
-class Chart(Base):
+class Chart(Base, ResponseModel):
     __tablename__ = "chart"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -24,11 +25,3 @@ class Chart(Base):
         self.title = title
         self.subtitle = subtitle
         self.type = type
-
-    @abstractmethod
-    def chart_url(self) -> str:
-        raise NotImplementedError("Must implement chart_url(self) method in subclass of Chart")
-
-    @abstractmethod
-    def to_dict(self) -> dict:
-        raise NotImplementedError("Must implement to_dict(self) method in sublass of Chart")

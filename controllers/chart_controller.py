@@ -7,7 +7,7 @@ import services.chart_service as chart_service
 
 chart_controller_blueprint = Blueprint('charts', __name__)
 
-@chart_controller_blueprint.get("/api/chart/choropleth-map/dataset/<string:dataset_name>/viewing-area/<string:viewing_area>/level/<string:dataset_level>")
+@chart_controller_blueprint.get("/chart/choropleth-map/dataset/<string:dataset_name>/viewing-area/<string:viewing_area>/level/<string:dataset_level>")
 def get_choropleth_map_for_dataset(dataset_name: (WeatherDatasets or EconomicDatasets),
                                    viewing_area: ViewingAreas,
                                    dataset_level: DatasetLevels) -> Response:
@@ -21,7 +21,17 @@ def get_choropleth_map_for_dataset(dataset_name: (WeatherDatasets or EconomicDat
     choropleth_map: ChoroplethMap = chart_service.get_choropleth_map(dataset_name, viewing_area, dataset_level)
     return jsonify(choropleth_map.to_dict())
 
-@chart_controller_blueprint.get("/api/charts")
+@chart_controller_blueprint.get("/chart/choropleth-map/<int:choropleth_chart_id>")
+def get_choropleth_map(choropleth_chart_id: int) -> Response:
+    choropleth_map: ChoroplethMap = chart_service.get_choropleth_map_by_id(choropleth_chart_id)
+    return jsonify(choropleth_map.to_dict())
+
+@chart_controller_blueprint.get("/chart/<int:chart_id>")
+def get_chart(chart_id: int) -> Response:
+    chart: Chart = chart_service.get_chart_by_id(chart_id)
+    return jsonify(chart.to_dict())
+
+@chart_controller_blueprint.get("/charts")
 def charts() -> Response:
     charts: list = chart_service.get_all_charts()
     return jsonify([chart.to_dict() for chart in charts])

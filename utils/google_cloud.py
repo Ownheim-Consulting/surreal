@@ -14,7 +14,7 @@ from six.moves.urllib.parse import quote
 
 load_dotenv()
 
-def add_signed_url_if_missing(*uris):
+def add_signed_url_if_missing(*uris: tuple) -> tuple:
     """Add a signed url to a uri if it is missing http:// or https://"""
     # A variable amoutn of uris
     # uris = "uri1", "uri2"
@@ -22,7 +22,7 @@ def add_signed_url_if_missing(*uris):
     uris = [generate_signed_url(GC_AUTH_FILE, GC_BUCKET_NAME, uri) if ('http://' not in uri or 'https://' not in uri) else uri for uri in uris]
     return uris
 
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
+def upload_blob(bucket_name, source_file_name, destination_blob_name) -> None:
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
     # bucket_name = "your-bucket-name"
@@ -39,7 +39,7 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
 def generate_signed_url(service_account_file, bucket_name, object_name,
                         subresource=None, expiration=3600, http_method='GET',
-                        query_parameters=None, headers=None):
+                        query_parameters=None, headers=None) -> str:
     """Generates a signed URL for an entity in a bucket."""
     # Your service account credentials
     # service_account_file = "local/path/to/file"
