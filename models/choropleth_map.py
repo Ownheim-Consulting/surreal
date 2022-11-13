@@ -1,9 +1,12 @@
 from database import Base
+
 from models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
 from models.map_chart import MapChart
 from models.response_model import ResponseModel
+import utils.google_cloud as GC
 
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, String, event
+from sqlalchemy.orm import QueryContext
 
 class ChoroplethMap(MapChart):
     __tablename__ = 'choropleth_map'
@@ -30,7 +33,7 @@ class ChoroplethMap(MapChart):
                  geo_data_format: GeoDataFormat,
                  z_data_uri: str,
                  z_data_format: ZDataFormat) -> None:
-        super(MapChart, self).__init__(title, subtitle, type, legend_title,\
+        super().__init__(title, subtitle, type, legend_title,\
                                        dataset_name, viewing_area_name, dataset_level)
         self.geo_data_uri = geo_data_uri
         self.geo_data_format = geo_data_format.value
@@ -52,6 +55,9 @@ class ChoroplethMap(MapChart):
             "z_data_format": self.z_data_format,
         }
 
-    def chart_url(self) -> str:
-        return "/api/chart/choropleth-map/dataset/{}/viewing-area/{}/level/{}"\
-            .format(self.dataset_name, self.viewing_area_name, self.dataset_level)
+@event.listens_for(ChoroplethMap, 'load', restore_load_context=True)
+def on_load(instance: ChoroplethMap, context: QueryContext) -> None:
+    if instance.geo_data_uri:
+        instance.geo_data_uri = GC.add_signed_url_if_missing(instance.geo_data_uri)[0]
+    if instance.z_data_uri:
+        instance.z_data_uri = GC.add_signed_url_if_missing(instance.z_data_uri)[0]

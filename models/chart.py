@@ -26,9 +26,5 @@ class Chart(Base):
         self.type = type
 
     @abstractmethod
-    def chart_url(self) -> str:
-        raise NotImplementedError("Must implement chart_url(self) method in subclass of Chart")
-
-    @abstractmethod
     def to_dict(self) -> dict:
         raise NotImplementedError("Must implement to_dict(self) method in sublass of Chart")
