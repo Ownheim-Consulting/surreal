@@ -26,7 +26,7 @@ class ChartsResponse(ResponseModel):
     def from_chart(cls, chart: Chart):
         return cls(chart.id, chart.type, chart.title, chart.subtitle)
 
-def get_choropleth_map(repo: BaseRepo, dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
+def get_choropleth_map(repo: BaseRepo[ChoroplethMap], dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = repo.db.query(ChoroplethMap)\
         .filter(ChoroplethMap.dataset_name == dataset_name)\
         .filter(ChoroplethMap.viewing_area_name == viewing_area)\
@@ -38,19 +38,19 @@ def get_choropleth_map(repo: BaseRepo, dataset_name: str, viewing_area: str, dat
                                .format(dataset_name, viewing_area, dataset_level))
     return choropleth_map
 
-def get_choropleth_map_by_id(repo: BaseRepo, choropleth_chart_id: int) -> ChoroplethMap:
+def get_choropleth_map_by_id(repo: BaseRepo[ChoroplethMap], choropleth_chart_id: int) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = repo.get(choropleth_chart_id)
     if not choropleth_map:
         raise ResourceNotFound('Could not find choropleth map with id = {}'.format(choropleth_chart_id))
     return choropleth_map
 
-def get_all_charts(repo: BaseRepo) -> list:
+def get_all_charts(repo: BaseRepo[Chart]) -> list:
     charts: list = [ChartsResponse.from_chart(chart) for chart in repo.get_all()]
     if not charts:
         raise ResourceNotFound('Could not find any charts')
     return charts
 
-def get_chart_by_id(repo: BaseRepo, chart_id: int) -> Chart:
+def get_chart_by_id(repo: BaseRepo[Chart], chart_id: int) -> Chart:
     chart: Chart = repo.get(chart_id)
     if not chart:
         raise ResourceNotFound('Could not find chart with id = {}'.format(chart_id))

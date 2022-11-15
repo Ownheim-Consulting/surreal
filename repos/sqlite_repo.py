@@ -1,30 +1,32 @@
+from dataclasses import dataclass
+
 from database import Base
 from repos.base_repo import BaseRepo
+from models.choropleth_map import ChoroplethMap
 
 from sqlalchemy.orm import Session
 
-class SqliteRepo(BaseRepo):
-    entity: Base = None
-    db: Session = None
+T = Base
 
-    def __init__(self, db: Session, entity: Base) -> None:
-        super().__init__(db, entity)
+@dataclass
+class SqliteRepo(BaseRepo[T]):
+    db: Session
+    model: T
 
-    def get(self, id: any):
-        return self.db.query(self.entity).filter(self.entity.id == id).first()
+    def get(self, id: any) -> T:
+        return self.db.query(self.model).filter(self.model.id == id).first()
 
     def get_all(self) -> list:
-        return self.db.query(self.entity).all()
+        return self.db.query(self.model).all()
 
-    def persist(self, entity: entity) -> None:
+    def persist(self, entity: T) -> None:
         self.db.add(entity)
         self.db.commit()
 
-    def update(self, entity: entity) -> None:
+    def update(self, entity: T) -> None:
         self.db.update()
         self.db.commit()
 
-    def delete(self, entity: entity) -> None:
+    def delete(self, entity: T) -> None:
         self.db.delete(entity)
         self.db.commit()
-

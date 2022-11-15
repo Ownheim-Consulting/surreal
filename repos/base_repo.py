@@ -1,19 +1,20 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Generic, TypeVar
 
 from database import Base
 
 from sqlalchemy.orm import Session
 
-class BaseRepo(ABC):
-    entity: Base = NotImplementedError
-    db: Session = NotImplementedError
+T = TypeVar('T', bound=Base)
 
-    def __init__(self, db: Session, entity: Base) -> None:
-        self.db = db
-        self.entity = entity
+@dataclass
+class BaseRepo(ABC, Generic[T]):
+    db: Session = NotImplementedError
+    model: T = NotImplementedError
 
     @abstractmethod
-    def get(self, id: any) -> entity:
+    def get(self, id: any) -> T:
         raise NotImplementedError
 
     @abstractmethod
@@ -21,13 +22,13 @@ class BaseRepo(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def persist(self, entity) -> None:
+    def persist(self, entity: T) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, entity) -> None:
+    def update(self, entity: T) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def delete(self, entity) -> None:
+    def delete(self, entity: T) -> None:
         raise NotImplementedError
