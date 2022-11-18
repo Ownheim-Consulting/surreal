@@ -3,7 +3,7 @@ from exceptions.http_error_response import BadRequestParameters
 from models.datasets import WeatherDatasets, EconomicDatasets, ViewingAreas, DatasetLevels
 from models.choropleth_map import ChoroplethMap
 from models.chart import Chart
-from repos.sqlite_repo import SqliteRepo
+from repos.sqlalchemy_repo import SqlAlchemyRepo
 import services.chart_service as chart_service
 
 from flask import Blueprint, jsonify, Response
@@ -21,24 +21,24 @@ def get_choropleth_map_for_dataset(dataset_name: (WeatherDatasets or EconomicDat
     if dataset_level not in DatasetLevels:
         raise BadRequestParameters('Dataset level not a valid dataset level: {}'.format(dataset_level))
 
-    repo: SqliteRepo = SqliteRepo(session, ChoroplethMap)
+    repo: SqlAlchemyRepo = SqlAlchemyRepo[ChoroplethMap](session, ChoroplethMap)
     choropleth_map: ChoroplethMap = chart_service.get_choropleth_map(repo, dataset_name, viewing_area, dataset_level)
     return jsonify(choropleth_map.to_dict())
 
 @chart_controller_blueprint.get('/chart/choropleth-map/<int:choropleth_chart_id>')
 def get_choropleth_map(choropleth_chart_id: int) -> Response:
-    repo: SqliteRepo = SqliteRepo(session, ChoroplethMap)
+    repo: SqlAlchemyRepo = SqlAlchemyRepo(session, ChoroplethMap)
     choropleth_map: ChoroplethMap = chart_service.get_choropleth_map_by_id(repo, choropleth_chart_id)
     return jsonify(choropleth_map.to_dict())
 
 @chart_controller_blueprint.get('/chart/<int:chart_id>')
 def get_chart(chart_id: int) -> Response:
-    repo: SqliteRepo = SqliteRepo(session, Chart)
+    repo: SqlAlchemyRepo = SqlAlchemyRepo(session, Chart)
     chart: Chart = chart_service.get_chart_by_id(repo, chart_id)
     return jsonify(chart.to_dict())
 
 @chart_controller_blueprint.get('/charts')
 def charts() -> Response:
-    repo: SqliteRepo = SqliteRepo(session, Chart)
+    repo: SqlAlchemyRepo = SqlAlchemyRepo(session, Chart)
     charts: list = chart_service.get_all_charts(repo)
     return jsonify([chart.to_dict() for chart in charts])

@@ -27,11 +27,9 @@ class ChartsResponse(ResponseModel):
         return cls(chart.id, chart.type, chart.title, chart.subtitle)
 
 def get_choropleth_map(repo: BaseRepo[ChoroplethMap], dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
-    choropleth_map: ChoroplethMap = repo.db.query(ChoroplethMap)\
-        .filter(ChoroplethMap.dataset_name == dataset_name)\
-        .filter(ChoroplethMap.viewing_area_name == viewing_area)\
-        .filter(ChoroplethMap.dataset_level == dataset_level)\
-        .first()
+    choropleth_map: ChoroplethMap = repo.get_by_params(dataset_name=dataset_name,
+                                                       viewing_area_name=viewing_area,
+                                                       dataset_level=dataset_level)
 
     if not choropleth_map:
         raise ResourceNotFound('Could not find choropleth map for dataset: {}, viewing-area: {}, and dataset-level: {}'\

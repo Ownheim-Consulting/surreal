@@ -2,15 +2,11 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from database import Base
-
-from sqlalchemy.orm import Session
-
-T = TypeVar('T', bound=Base)
+T = TypeVar('T')
 
 @dataclass
 class BaseRepo(ABC, Generic[T]):
-    db: Session = NotImplementedError
+    db: any = NotImplementedError
     model: T = NotImplementedError
 
     @abstractmethod
@@ -19,6 +15,14 @@ class BaseRepo(ABC, Generic[T]):
 
     @abstractmethod
     def get_all(self) -> list:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_by_params(self, **params: dict) -> T:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_all_by_params(self, **params: dict) -> T:
         raise NotImplementedError
 
     @abstractmethod
@@ -31,4 +35,16 @@ class BaseRepo(ABC, Generic[T]):
 
     @abstractmethod
     def delete(self, entity: T) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def begin(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def commit(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def rollback(self) -> None:
         raise NotImplementedError
