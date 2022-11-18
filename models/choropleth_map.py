@@ -10,14 +10,14 @@ from sqlalchemy.orm import QueryContext
 class ChoroplethMap(MapChart):
     __tablename__ = 'choropleth_map'
 
-    id = Column(Integer, ForeignKey("chart.id"), primary_key=True)
+    id = Column(Integer, ForeignKey('chart.id'), primary_key=True)
     geo_data_uri = Column(String(512))
     geo_data_format = Column(String(50)) # Eg. JSON, CSV
     z_data_uri = Column(String(512))
     z_data_format = Column(String(50)) # Eg. JSON, CSV
 
     __mapper_args__ = {
-        "polymorphic_identity": "choropleth_map"
+        'polymorphic_identity': 'choropleth_map'
     }
 
     def __init__(self,
@@ -41,17 +41,17 @@ class ChoroplethMap(MapChart):
 
     def to_dict(self) -> dict:
         return {
-            "id": self.id,
-            "title": self.title,
-            "type": self.type,
-            "legend_title": self.legend_title,
-            "dataset_name": self.dataset_name,
-            "viewing_area": self.viewing_area_name,
-            "dataset_level": self.dataset_level,
-            "geo_data_uri": self.geo_data_uri,
-            "geo_data_format": self.geo_data_format,
-            "z_data_uri": self.z_data_uri,
-            "z_data_format": self.z_data_format,
+            'id': self.id,
+            'title': self.title,
+            'type': self.type,
+            'legend_title': self.legend_title,
+            'dataset_name': self.dataset_name,
+            'viewing_area': self.viewing_area_name,
+            'dataset_level': self.dataset_level,
+            'geo_data_uri': self.geo_data_uri,
+            'geo_data_format': self.geo_data_format,
+            'z_data_uri': self.z_data_uri,
+            'z_data_format': self.z_data_format,
         }
 
 @event.listens_for(ChoroplethMap, 'load', restore_load_context=True)

@@ -1,12 +1,10 @@
-from abc import abstractmethod
-
 from database import Base
 from models.response_model import ResponseModel
 
 from sqlalchemy import Column, String, Integer
 
 class Chart(Base, ResponseModel):
-    __tablename__ = "chart"
+    __tablename__ = 'chart'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(256))
@@ -14,8 +12,8 @@ class Chart(Base, ResponseModel):
     type = Column(String(256))
 
     __mapper_args__ = {
-        "polymorphic_identity": "chart",
-        "polymorphic_on": type,
+        'polymorphic_identity': 'chart',
+        'polymorphic_on': type,
     }
 
     def __init__(self,
