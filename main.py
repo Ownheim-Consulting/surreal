@@ -10,8 +10,8 @@ Authors Listed in Alphabetical Order
 from controllers.chart_controller import chart_controller_blueprint
 from controllers.google_cloud_controller import google_cloud_controller_blueprint 
 from database import init_db, db_session
-from exceptions.http_error_response import HttpErrorResponse, ResourceNotFound, InternalServerError
-from utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
+from exceptions.http import ResourceNotFound, InternalServerError
+from models.http.http_error_response import HttpErrorResponse
 
 from flask import abort, Blueprint, Flask, jsonify, Response
 

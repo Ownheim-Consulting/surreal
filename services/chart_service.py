@@ -1,30 +1,9 @@
-from dataclasses import dataclass
-
-from exceptions.http_error_response import ResourceNotFound
-from models.chart import Chart
-from models.choropleth_map import ChoroplethMap
-from models.response_model import ResponseModel
-from repos.base_repo import BaseRepo
-import utils.google_cloud as GC
-
-@dataclass
-class ChartsResponse(ResponseModel):
-    id: int
-    type: str
-    title: str
-    subtitle: str
-
-    def to_dict(self) -> dict:
-        return {
-            'id': self.id,
-            'title': self.title,
-            'subtitle': self.subtitle,
-            'type': self.type,
-        }
-
-    @classmethod
-    def from_chart(cls, chart: Chart):
-        return cls(chart.id, chart.type, chart.title, chart.subtitle)
+from exceptions.http import ResourceNotFound
+from models.database.chart import Chart
+from models.database.choropleth_map import ChoroplethMap
+from models.http.charts_response import ChartsResponse
+from repos.database.base_repo import BaseRepo
+import repos.external.google_cloud as GC
 
 def get_choropleth_map(repo: BaseRepo[ChoroplethMap], dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = repo.get_by_params(dataset_name=dataset_name,

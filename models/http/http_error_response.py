@@ -1,4 +1,4 @@
-from models.response_model import ResponseModel
+from models.http.response_model import ResponseModel
 
 class HttpErrorResponse(Exception, ResponseModel):
     def __init__(self, code=None, name=None, message=None) -> None:
@@ -17,14 +17,3 @@ class HttpErrorResponse(Exception, ResponseModel):
             'message': self.message
         }
 
-class BadRequestParameters(HttpErrorResponse):
-    def __init__(self, message=None) -> None:
-        super().__init__(400, 'BAD_REQUEST_PARAMETERS', message)
-
-class ResourceNotFound(HttpErrorResponse):
-    def __init__(self, message=None) -> None:
-        super().__init__(404, 'RESOURCE_NOT_FOUND', message)
-
-class InternalServerError(HttpErrorResponse):
-    def __init__(self, message=None) -> None:
-        super().__init__(500, 'INTERNAL_SERVER_ERROR', message)

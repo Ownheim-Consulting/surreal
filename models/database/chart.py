@@ -1,5 +1,5 @@
 from database import Base
-from models.response_model import ResponseModel
+from models.http.response_model import ResponseModel
 
 from sqlalchemy import Column, String, Integer
 

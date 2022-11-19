@@ -1,8 +1,8 @@
 from database import Base
-from models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
-from models.map_chart import MapChart
-from models.response_model import ResponseModel
-import utils.google_cloud as GC
+from models.enum.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets, GeoDataFormat, ZDataFormat
+from models.database.map_chart import MapChart
+from models.http.response_model import ResponseModel
+import repos.external.google_cloud as GC
 
 from sqlalchemy import Column, ForeignKey, Integer, String, event
 from sqlalchemy.orm import QueryContext

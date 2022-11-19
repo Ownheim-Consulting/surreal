@@ -1,9 +1,9 @@
 from database import db_session as session
-from exceptions.http_error_response import BadRequestParameters
-from models.datasets import WeatherDatasets, EconomicDatasets, ViewingAreas, DatasetLevels
-from models.choropleth_map import ChoroplethMap
-from models.chart import Chart
-from repos.sqlalchemy_repo import SqlAlchemyRepo
+from exceptions.http import BadRequestParameters
+from models.enum.datasets import WeatherDatasets, EconomicDatasets, ViewingAreas, DatasetLevels
+from models.database.choropleth_map import ChoroplethMap
+from models.database.chart import Chart
+from repos.database.sqlalchemy_repo import SqlAlchemyRepo
 import services.chart_service as chart_service
 
 from flask import Blueprint, jsonify, Response

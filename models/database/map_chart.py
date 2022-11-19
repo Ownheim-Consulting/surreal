@@ -1,5 +1,5 @@
-from models.chart import Chart
-from models.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets
+from models.database.chart import Chart
+from models.enum.datasets import ViewingAreas, DatasetLevels, WeatherDatasets, EconomicDatasets
 
 from sqlalchemy import Column, Integer, String, ForeignKey
 

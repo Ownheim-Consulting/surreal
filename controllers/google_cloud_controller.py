@@ -1,5 +1,5 @@
 from utils.constants import GC_AUTH_FILE, GC_BUCKET_NAME
-import utils.google_cloud as GC
+import repos.external.google_cloud as GC
 
 from flask import Blueprint, jsonify, Response
 

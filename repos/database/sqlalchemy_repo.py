@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import TypeVar
 
 from database import Base
-from repos.base_repo import BaseRepo
+from repos.database.base_repo import BaseRepo
 
 from sqlalchemy.orm import Session
 
