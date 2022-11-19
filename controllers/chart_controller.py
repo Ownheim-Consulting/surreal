@@ -3,6 +3,7 @@ from exceptions.http import BadRequestParameters
 from models.enum.datasets import WeatherDatasets, EconomicDatasets, ViewingAreas, DatasetLevels
 from models.database.choropleth_map import ChoroplethMap
 from models.database.chart import Chart
+from models.http.charts_response import ChartsResponse
 from repos.database.sqlalchemy_repo import SqlAlchemyRepo
 import services.chart_service as chart_service
 
@@ -40,5 +41,5 @@ def get_chart(chart_id: int) -> Response:
 @chart_controller_blueprint.get('/charts')
 def charts() -> Response:
     repo: SqlAlchemyRepo = SqlAlchemyRepo(session, Chart)
-    charts: list = chart_service.get_all_charts(repo)
+    charts: list[ChartsResponse] = chart_service.get_all_charts(repo)
     return jsonify([chart.to_dict() for chart in charts])

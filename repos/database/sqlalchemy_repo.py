@@ -16,16 +16,16 @@ class SqlAlchemyRepo(BaseRepo[T]):
     def get(self, id: any) -> T:
         return self.db.query(self.model).filter(self.model.id == id).first()
 
-    def get_all(self) -> list:
+    def get_all(self) -> list[T]:
         return self.db.query(self.model).all()
 
-    def get_by_params(self, **params: dict) -> T:
+    def get_by_params(self, **params: dict[str, any]) -> T:
         query = self.db.query(self.model)
         for key, value in params.items():
             query.filter(key == value)
         return query.first()
 
-    def get_all_by_params(self, **parms: dict) -> T:
+    def get_all_by_params(self, **parms: dict[str, any]) -> list[T]:
         query = self.db.query(self.model)
         for key, value in params.items():
             query.filter(key == value)

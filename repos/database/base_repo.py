@@ -14,15 +14,15 @@ class BaseRepo(ABC, Generic[T]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all(self) -> list:
+    def get_all(self) -> list[T]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_params(self, **params: dict) -> T:
+    def get_by_params(self, **params: dict[str, any]) -> T:
         raise NotImplementedError
 
     @abstractmethod
-    def get_all_by_params(self, **params: dict) -> T:
+    def get_all_by_params(self, **params: dict[str, any]) -> list[T]:
         raise NotImplementedError
 
     @abstractmethod

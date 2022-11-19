@@ -14,7 +14,7 @@ from six.moves.urllib.parse import quote
 
 load_dotenv()
 
-def add_signed_url_if_missing(*uris: tuple) -> tuple:
+def add_signed_url_if_missing(*uris: tuple) -> tuple[str]:
     '''Add a signed url to a uri if it is missing http:// or https://'''
     # A variable amoutn of uris
     # uris = 'uri1', 'uri2'

@@ -39,7 +39,7 @@ class ChoroplethMap(MapChart):
         self.z_data_uri = z_data_uri
         self.z_data_format = z_data_format.value
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, any]:
         return {
             'id': self.id,
             'title': self.title,

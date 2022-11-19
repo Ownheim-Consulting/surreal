@@ -10,7 +10,7 @@ class HttpErrorResponse(Exception, ResponseModel):
     def __repr__(self) -> str:
         return f'HttpErrorResponse(code={self.code}, name={self.name}, message={self.message})'
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, any]:
         return {
             'code': self.code,
             'name': self.name,

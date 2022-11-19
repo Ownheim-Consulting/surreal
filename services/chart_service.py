@@ -9,7 +9,6 @@ def get_choropleth_map(repo: BaseRepo[ChoroplethMap], dataset_name: str, viewing
     choropleth_map: ChoroplethMap = repo.get_by_params(dataset_name=dataset_name,
                                                        viewing_area_name=viewing_area,
                                                        dataset_level=dataset_level)
-
     if not choropleth_map:
         raise ResourceNotFound('Could not find choropleth map for dataset: {}, viewing-area: {}, and dataset-level: {}'\
                                .format(dataset_name, viewing_area, dataset_level))
@@ -21,8 +20,8 @@ def get_choropleth_map_by_id(repo: BaseRepo[ChoroplethMap], choropleth_chart_id:
         raise ResourceNotFound('Could not find choropleth map with id = {}'.format(choropleth_chart_id))
     return choropleth_map
 
-def get_all_charts(repo: BaseRepo[Chart]) -> list:
-    charts: list = [ChartsResponse.from_chart(chart) for chart in repo.get_all()]
+def get_all_charts(repo: BaseRepo[Chart]) -> list[ChartsResponse]:
+    charts: list[ChartsResponse] = [ChartsResponse.from_chart(chart) for chart in repo.get_all()]
     if not charts:
         raise ResourceNotFound('Could not find any charts')
     return charts
