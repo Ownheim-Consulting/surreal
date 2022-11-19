@@ -1,15 +1,16 @@
 [[source]]
 verify_ssl = true
-name = "NASA Space Apps 2022 Backend"
+name = "Surreal"
 url = "https://pypi.python.org/simple"
 
 [packages]
 flask = "*"
-six = "*"
 google-auth = "*"
 google-cloud-storage = "*"
-python-dotenv = "*"
 gunicorn = "*"
+python-dotenv = "*"
+six = "*"
+python-dotenv = "*"
 sqlalchemy = "*"
 
 [dev-packages]
