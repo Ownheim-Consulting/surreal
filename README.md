@@ -14,34 +14,42 @@ The challenge: Take Flight: Making the Most of NASA’s Airborne Data
 Surreal combines NASA airbourne data with Census Bureau economic data to provide
 dynamic visualizations in an easy to use mobile interface (housed in a different repository).
 
-# Dependencies
+## Dependencies
 - Python 3.10
+- Pip
 - Pipenv
 
-# How to Run
+## How to Install and Run the Project
 This project uses Pipenv for dependency management. 
 
 1. Install Pipenv
-```
-pip install --user pipenv
-```
+    ```
+    pip install --user pipenv
+    ```
 
-2. Begin Pipenv shell
-```
-pipenv shell
-```
+2. Clone this repository to your system. Then navigate to the directory that you cloned this repository into.
 
-3. Install project's dependencies
-```
-pipenv install
-```
+3. Install project dependencies
+    ```
+    pipenv install
+    ```
 
-4. Run the project (Gunicorn only works on Linux/Unix systems)
-```
-gunicorn -c gunicorn.conf.py -b :5000 main:app
-```
+4. Begin a project shell
+    ```
+    pipenv shell
+    ```
 
-# Public API
+5. Once inside the project shell simply run the project (Gunicorn only works on Linux/Unix systems)
+    ```
+    gunicorn -c gunicorn.conf.py -b :5000 main:app
+    ```
+    If you are on Windows than you can run the following command:
+    ```
+    python main.py
+    ```
+    This will start Flask's development server. This server is not production ready, but it should be fine for development purposes.
+
+## Public API
 This API is currently hosted publicly using Google Cloud. If you would like to hit this endpoint without needing
 to install or build the project you can access the API at the following URL:
 
