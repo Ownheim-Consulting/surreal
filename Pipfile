@@ -10,7 +10,6 @@ google-cloud-storage = "*"
 gunicorn = "*"
 python-dotenv = "*"
 six = "*"
-python-dotenv = "*"
 sqlalchemy = "*"
 
 [dev-packages]

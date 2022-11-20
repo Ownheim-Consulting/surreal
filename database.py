@@ -18,7 +18,7 @@ def init_db():
     # import all modules here that might define models so that
     # they will be registered properly on the metadata.  Otherwise
     # you will have to import them first before calling init_db()
-    from models.chart import Chart
-    from models.map_chart import MapChart
-    from models.choropleth_map import ChoroplethMap
+    from models.database.chart import Chart
+    from models.database.map_chart import MapChart
+    from models.database.choropleth_map import ChoroplethMap
     Base.metadata.create_all(bind=engine)
