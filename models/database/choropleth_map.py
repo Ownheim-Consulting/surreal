@@ -43,6 +43,7 @@ class ChoroplethMap(MapChart):
         return {
             'id': self.id,
             'title': self.title,
+            'subtitle': self.subtitle,
             'type': self.type,
             'legend_title': self.legend_title,
             'dataset_name': self.dataset_name,
