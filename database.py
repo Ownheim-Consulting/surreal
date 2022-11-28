@@ -2,11 +2,13 @@ import os
 import abc
 
 from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.orm.scoping import ScopedSession
 
-engine = create_engine('sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'surreal.db'))
-db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+engine: Engine = create_engine('sqlite:///' + os.path.join(os.path.abspath(os.path.dirname(__file__)), 'surreal.db'))
+db_session: ScopedSession = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 # Declare a Base that extends ABCMeta so that @abc.abstractmethod can be used
 class DeclarativeBaseABCMeta(DeclarativeMeta, abc.ABCMeta):

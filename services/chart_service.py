@@ -3,7 +3,7 @@ from models.database.chart import Chart
 from models.database.choropleth_map import ChoroplethMap
 from models.http.charts_response import ChartsResponse
 from repos.database.base_repo import BaseRepo
-import repos.external.google_cloud as GC
+
 
 def get_choropleth_map(repo: BaseRepo[ChoroplethMap], dataset_name: str, viewing_area: str, dataset_level: str) -> ChoroplethMap:
     choropleth_map: ChoroplethMap = repo.get_by_params(dataset_name=dataset_name,
